@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import "./App.css";
 import { IWeather } from "./interfaces/IWeather";
 
@@ -8,7 +8,7 @@ const BASE_URL = import.meta.env.VITE_BASE_URL;
 function App() {
 
   const [unit, setUnit] = useState("°C");
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState("La Sabana, San José, Costa Rica");
   const days = 3
   //const [days, setDays] = useState(3);
   
@@ -34,6 +34,24 @@ function App() {
       console.error(error);
     }
   };
+
+  useEffect( () => {
+    try {
+      const simulateSubmit = async () => {
+        try {
+          const event = new Event("submit", { cancelable: true, bubbles: true });
+          await handleSubmit(event as unknown as FormEvent);
+        } catch (error) {
+          console.error(error)
+        }
+      };
+      
+      simulateSubmit();
+      
+    } catch (error) {
+      console.error(error)
+    }
+  }, [])
 
   return (
     <div className="main-container">
